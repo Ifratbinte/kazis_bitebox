@@ -24,10 +24,9 @@ export const SITE = {
 }
 
 export const CONTACT = {
-  phone: '+880 1XXXXXXXXX',
-  whatsapp: '880 1XXXXXXXXX',
-  messenger: 'https://m.me/kazisbitebox',
-  facebook: 'https://facebook.com/kazisbitebox',
-  email: 'hello@kazisbitebox.com',
+  phone: '+880 1831305640',
+  whatsapp: '880 1831305640',
+  // messenger: 'https://m.me/kazisbitebox',
+  facebook: 'https://www.facebook.com/share/1CQHgdtDsv/?mibextid=wwXIfr',
   addressPlaceholder: 'Dhaka, Bangladesh',
 }
