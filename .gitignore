@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+.next/
+.vite/
+
+# Testing
+coverage/
+
+# Tool caches
+.turbo/
+.cache/
+.parcel-cache/
+.eslintcache
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Editor swap files
+*.swp
+*.swo
+
+# AI coding tools
+.claude/
+.opencode/
+.cursor/
+.roo/
+.aider*
+.continue/
