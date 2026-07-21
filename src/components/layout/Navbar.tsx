@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { NavLink as RouterNavLink } from 'react-router-dom'
 import { Container } from '@/components/ui/Container'
 import { Button } from '@/components/ui/Button'
-import { NAV_LINKS, SITE } from '@/constants/site'
+import { NAV_LINKS } from '@/constants/site'
+import logo from '@/assets/logo.png'
 import { cn } from '@/utils/cn'
 
 export function Navbar() {
@@ -11,8 +12,8 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur">
       <Container className="flex h-18 items-center justify-between py-3">
-        <RouterNavLink to="/" className="font-display text-xl font-semibold text-secondary">
-          {SITE.name}
+        <RouterNavLink to="/" className="flex items-center">
+          <img src={logo} alt="BiteBox" className="h-8 w-auto" />
         </RouterNavLink>
 
         <nav className="hidden items-center gap-8 md:flex" aria-label="Main navigation">

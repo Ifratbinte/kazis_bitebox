@@ -26,7 +26,7 @@ export const SITE = {
 export const CONTACT = {
   phone: '+880 1831305640',
   whatsapp: '880 1831305640',
-  // messenger: 'https://m.me/kazisbitebox',
+  messenger: 'https://m.me/kazisbitebox',
   facebook: 'https://www.facebook.com/share/1CQHgdtDsv/?mibextid=wwXIfr',
   addressPlaceholder: 'Dhaka, Bangladesh',
 }
