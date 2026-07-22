@@ -73,11 +73,11 @@ export function DeliveryPage() {
         </ol>
       </div>
 
-      <div className="mt-12 rounded-card border border-dashed border-border p-6" ref={trackingRef}>
-        <div className={cn('anim-scale-in', trackingVisible && 'is-visible')}>
-          <h2 className="font-display text-lg font-semibold text-secondary">Coming soon: Delivery Tracking</h2>
-          <p className="mt-2 text-sm text-text-muted">
-            We're working on real-time order tracking so you'll know exactly when BiteBox is on its
+      <div className="mt-12 rounded-card bg-primary/20 border border-dashed border-primary p-6" ref={trackingRef}>
+        <div className={cn('anim-scale-in', trackingVisible && 'is-visible ')}>
+          <h2 className="font-display text-lg font-bold text-secondary">Coming soon: Delivery Tracking</h2>
+          <p className="mt-2 text-sm text-black">
+            We're working on real-time order tracking so you'll know exactly when <strong className='text-primary'>BiteBox</strong> is on its
             way. For now, we'll keep you updated directly over Messenger or WhatsApp.
           </p>
         </div>
