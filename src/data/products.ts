@@ -28,7 +28,7 @@ export const products: Product[] = [
       'Steam for 15–20 minutes until the wrapper turns glossy.',
       'Serve hot with your favorite chutney or sauce.',
     ],
-    shelfLife: '6 months frozen from date of packing.',
+    // shelfLife: '6 months frozen from date of packing.',
     packSizes: [
       { label: 'Small', weight: '250g (approx. 12 pcs)', price: 220 },
       { label: 'Regular', weight: '500g (approx. 22 pcs)', price: 380 },
@@ -64,7 +64,7 @@ export const products: Product[] = [
       'Drain on a paper towel for a minute before serving.',
       'Best served hot with mustard sauce or ketchup.',
     ],
-    shelfLife: '6 months frozen from date of packing.',
+    // shelfLife: '6 months frozen from date of packing.',
     packSizes: [
       { label: 'Small', weight: '6 pcs', price: 200 },
       { label: 'Regular', weight: '12 pcs', price: 400 },

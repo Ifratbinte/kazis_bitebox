@@ -42,11 +42,11 @@ export function ProductDetailsPage() {
             From ৳{startingPrice}
           </p>
 
-          <div className="mt-6 flex flex-wrap gap-3 text-sm">
+          {/* <div className="mt-6 flex flex-wrap gap-3 text-sm">
             <span className="rounded-full bg-secondary/5 px-3 py-1 text-secondary">
               Shelf life: {product.shelfLife}
             </span>
-          </div>
+          </div> */}
 
           <Button onClick={() => openOrderModal(product)} size="lg" className="mt-8 btn-press">
             Order Now

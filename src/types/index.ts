@@ -15,7 +15,7 @@ export interface Product {
   ingredients: string[]
   storage: string
   cookingInstructions: string[]
-  shelfLife: string
+  shelfLife?: string
   packSizes: ProductPackSize[]
   isBestSeller?: boolean
 }
