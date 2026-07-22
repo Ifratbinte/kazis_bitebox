@@ -11,6 +11,10 @@ export function MainLayout() {
   const [isScrolled, setIsScrolled] = useState(false)
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [location.pathname])
+
+  useEffect(() => {
     if (!isHomePage) return
 
     function handleScroll() {
