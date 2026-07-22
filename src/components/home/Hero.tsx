@@ -8,23 +8,68 @@ import { cn } from '@/utils/cn'
 
 export function Hero() {
   const [active, setActive] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
 
   const next = useCallback(() => {
     setActive((i) => (i + 1) % products.length)
   }, [])
 
   useEffect(() => {
+    if (isPaused) return
     const id = setInterval(next, 4000)
     return () => clearInterval(id)
-  }, [next])
+  }, [next, isPaused])
 
   const product = products[active]
 
   return (
-    <section className="overflow-hidden border-b border-border bg-gradient-to-b from-accent/10 to-background">
-      <Container className="grid grid-cols-1 items-center gap-10 py-16 sm:py-20 lg:grid-cols-2 lg:py-28">
+    <section className="relative overflow-hidden bg-gradient-to-b from-accent/10 to-background" onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
+      {/* Decorative Shapes */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        {/* Large circle top right */}
+        <svg
+          className="absolute -right-32 -top-32 h-96 w-96 text-gold/10"
+          viewBox="0 0 200 200"
+        >
+          <circle cx="100" cy="100" r="100" fill="currentColor" />
+        </svg>
+
+        {/* Medium circle bottom left */}
+        <svg
+          className="absolute -bottom-20 -left-20 h-72 w-72 text-gold/15"
+          viewBox="0 0 200 200"
+        >
+          <circle cx="100" cy="100" r="100" fill="currentColor" />
+        </svg>
+
+        {/* Small dots */}
+        <svg className="absolute left-1/4 top-1/3 h-4 w-4 text-gold/20" viewBox="0 0 16 16">
+          <circle cx="8" cy="8" r="8" fill="currentColor" />
+        </svg>
+        <svg className="absolute bottom-1/4 right-1/3 h-3 w-3 text-gold/25" viewBox="0 0 12 12">
+          <circle cx="6" cy="6" r="6" fill="currentColor" />
+        </svg>
+        <svg className="absolute left-1/2 top-1/4 h-2 w-2 text-gold/15" viewBox="0 0 8 8">
+          <circle cx="4" cy="4" r="4" fill="currentColor" />
+        </svg>
+
+        {/* Wavy shape */}
+        <svg
+          className="absolute bottom-0 left-0 w-full text-background/50"
+          viewBox="0 0 1440 120"
+          fill="none"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M0 120L48 108C96 96 192 72 288 66C384 60 480 72 576 78C672 84 768 84 864 78C960 72 1056 60 1152 60C1248 60 1344 72 1392 78L1440 84V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0Z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+
+      <Container className="relative z-10 grid grid-cols-1 items-center gap-10 pt-[8.5rem] pb-16 sm:pt-[10rem] sm:pb-20 lg:grid-cols-2 lg:pt-[12rem] lg:pb-28">
         <div>
-          <Badge tone="primary">Frozen at peak flavor</Badge>
+          <Badge tone="gold">Frozen at peak flavor</Badge>
           <h1 className="mt-5 font-display text-4xl font-semibold leading-tight text-secondary sm:text-5xl">
             Restaurant-quality momo and rolls, ready from your own freezer.
           </h1>

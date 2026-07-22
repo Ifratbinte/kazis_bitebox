@@ -1,11 +1,12 @@
 import type { ReactNode } from 'react'
 import { cn } from '@/utils/cn'
 
-type BadgeTone = 'primary' | 'accent' | 'success' | 'neutral' | 'white'
+type BadgeTone = 'primary' | 'accent' | 'gold' | 'success' | 'neutral' | 'white'
 
 const toneStyles: Record<BadgeTone, string> = {
   primary: 'bg-primary/10 text-primary',
   accent: 'bg-accent/15 text-accent',
+  gold: 'bg-gold/15 text-gold',
   success: 'bg-success/10 text-success',
   neutral: 'bg-secondary/10 text-secondary',
   white: 'bg-white/30 text-white',

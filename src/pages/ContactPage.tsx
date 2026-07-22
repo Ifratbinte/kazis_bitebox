@@ -46,7 +46,7 @@ export function ContactPage() {
             </span>
             <div>
               <p className="font-semibold text-secondary">Facebook Messenger</p>
-              <p className="text-sm text-text-muted">@kazisbitebox</p>
+              <p className="text-sm text-text-muted">@Kazis-BiteBox</p>
             </div>
           </a>
 

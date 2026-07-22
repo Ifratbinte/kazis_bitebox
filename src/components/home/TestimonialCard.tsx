@@ -1,7 +1,10 @@
+import { useState } from 'react'
 import type { Testimonial } from '@/types'
 import { FiStar } from 'react-icons/fi'
 
 export function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
+  const [showEnglish, setShowEnglish] = useState(false)
+
   return (
     <div className="flex h-full flex-col rounded-card border border-border bg-surface p-6">
       <div className="flex gap-1">
@@ -9,12 +12,23 @@ export function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           <FiStar
             key={i}
             size={16}
-            className={i < testimonial.rating ? 'fill-accent text-accent' : 'text-border'}
+            className={i < testimonial.rating ? 'fill-gold text-gold' : 'text-border'}
           />
         ))}
       </div>
-      <p className="mt-4 flex-1 text-sm text-text-muted">"{testimonial.quote}"</p>
-      <div className="mt-5">
+      <p className="mt-4 flex-1 text-sm text-text-muted">
+        "{showEnglish ? testimonial.quoteEn : testimonial.quote}"
+      </p>
+      <div className="mt-4">
+        <button
+          type="button"
+          onClick={() => setShowEnglish(!showEnglish)}
+          className="text-xs text-primary hover:underline"
+        >
+          {showEnglish ? 'বাংলায় পড়ুন' : 'Read in English'}
+        </button>
+      </div>
+      <div className="mt-3 border-t border-border pt-3">
         <p className="text-sm font-semibold text-secondary">{testimonial.name}</p>
         <p className="text-xs text-text-muted">{testimonial.location}</p>
       </div>

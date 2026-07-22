@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import type { Product } from '@/types'
 import { getOrderLink } from '@/services/orderMessage'
-import { FiX } from 'react-icons/fi'
+import { FiX, FiPhone } from 'react-icons/fi'
 import { TbBrandMessenger } from 'react-icons/tb'
 import { FaWhatsapp } from 'react-icons/fa'
+import { CONTACT } from '@/constants/site'
 
 interface OrderModalProps {
   product: Product | null
@@ -49,7 +50,7 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md rounded-t-card bg-surface p-6 shadow-xl sm:rounded-card"
+        className="w-full max-w-lg rounded-t-card bg-surface p-6 shadow-xl sm:rounded-card"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between">
@@ -117,15 +118,15 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
           </div>
         </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-3">
+        <div className="mt-6 grid grid-cols-3 gap-3">
           <a
             href={orderLink}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 rounded-lg bg-[#006AFF] px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
           >
-            <TbBrandMessenger size={18} aria-hidden="true" />
-            Messenger
+            <TbBrandMessenger size={20} aria-hidden="true" />
+            <span className="hidden sm:inline">Messenger</span>
           </a>
           <a
             href={whatsappLink}
@@ -133,8 +134,15 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 rounded-lg bg-[#25D366] px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
           >
-            <FaWhatsapp size={18} aria-hidden="true" />
-            WhatsApp
+            <FaWhatsapp size={20} aria-hidden="true" />
+            <span className="hidden sm:inline">WhatsApp</span>
+          </a>
+          <a
+            href={`tel:${CONTACT.phone}`}
+            className="flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+          >
+            <FiPhone size={20} aria-hidden="true" />
+            <span className="hidden sm:inline">Call</span>
           </a>
         </div>
         <p className="mt-3 text-center text-xs text-text-muted">

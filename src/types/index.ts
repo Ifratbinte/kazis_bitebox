@@ -31,6 +31,7 @@ export interface Testimonial {
   name: string
   location: string
   quote: string
+  quoteEn: string
   rating: number
 }
 

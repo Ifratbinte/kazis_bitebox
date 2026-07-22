@@ -27,7 +27,8 @@ export const CONTACT = {
   phone: '+880 1831305640',
   whatsapp: '880 1831305640',
   email: 'ifratbinte@gmail.com',
-  messenger: 'https://m.me/kazisbitebox',
+  messenger: 'https://www.facebook.com/people/Kazis-BiteBox/61591256892056/',
+  // messenger: 'https://www.facebook.com/messages/t/61591256892056',
   facebook: 'https://www.facebook.com/share/1CQHgdtDsv/?mibextid=wwXIfr',
-  address: 'Uttara, Sector 11, Dhaka, Bangladesh',
+  address: 'Sector 11, Uttara, Dhaka, Bangladesh',
 }

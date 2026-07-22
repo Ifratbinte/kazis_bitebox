@@ -1,6 +1,6 @@
 import { Container } from '@/components/ui/Container'
 import { SectionTitle } from '@/components/ui/SectionTitle'
-import { TestimonialCard } from '@/components/home/TestimonialCard'
+import { TestimonialSlider } from '@/components/home/TestimonialSlider'
 import { testimonials } from '@/data/testimonials'
 
 export function Testimonials() {
@@ -8,10 +8,8 @@ export function Testimonials() {
     <section className="bg-surface py-16 sm:py-20">
       <Container>
         <SectionTitle eyebrow="Customer stories" title="What Dhaka is saying about BiteBox" />
-        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((t) => (
-            <TestimonialCard key={t.id} testimonial={t} />
-          ))}
+        <div className="mt-10">
+          <TestimonialSlider testimonials={testimonials} />
         </div>
       </Container>
     </section>

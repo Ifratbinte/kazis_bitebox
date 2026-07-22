@@ -30,16 +30,16 @@ export function ProductShowcase({
     >
       {variant === 'bestSeller' && (
         <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-          <svg className="absolute -top-16 -left-16 h-72 w-72 text-primary/5" viewBox="0 0 200 200">
+          <svg className="absolute -top-16 -left-16 h-72 w-72 text-gold/10" viewBox="0 0 200 200">
             <circle cx="100" cy="100" r="100" fill="currentColor" />
           </svg>
-          <svg className="absolute -bottom-10 -right-10 h-56 w-56 text-accent/10" viewBox="0 0 200 200">
+          <svg className="absolute -bottom-10 -right-10 h-56 w-56 text-gold/15" viewBox="0 0 200 200">
             <circle cx="100" cy="100" r="100" fill="currentColor" />
           </svg>
-          <svg className="absolute top-1/4 right-1/6 h-3 w-3 text-primary/15" viewBox="0 0 12 12">
+          <svg className="absolute top-1/4 right-1/6 h-3 w-3 text-gold/20" viewBox="0 0 12 12">
             <circle cx="6" cy="6" r="6" fill="currentColor" />
           </svg>
-          <svg className="absolute bottom-1/3 left-1/5 h-2.5 w-2.5 text-accent/20" viewBox="0 0 10 10">
+          <svg className="absolute bottom-1/3 left-1/5 h-2.5 w-2.5 text-gold/25" viewBox="0 0 10 10">
             <circle cx="5" cy="5" r="5" fill="currentColor" />
           </svg>
         </div>
