@@ -1,7 +1,9 @@
 import { Container } from '@/components/ui/Container'
 import { SectionTitle } from '@/components/ui/SectionTitle'
 import { FeatureCard } from '@/components/home/FeatureCard'
-import { LeafIcon, ShieldIcon, SnowflakeIcon } from '@/components/ui/icons'
+import { FiShield } from 'react-icons/fi'
+import { FaLeaf } from "react-icons/fa";
+import { GoPackage } from "react-icons/go";
 
 export function AboutPage() {
   return (
@@ -59,17 +61,17 @@ export function AboutPage() {
           />
           <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-3">
             <FeatureCard
-              icon={<LeafIcon />}
+              icon={<FaLeaf size={22} />}
               title="Quality Commitment"
               description="Fresh chicken, checked ingredients, and recipes tested until they're right — every single batch."
             />
             <FeatureCard
-              icon={<ShieldIcon />}
+              icon={<FiShield size={22} />}
               title="Food Safety"
               description="Prepared under strict hygiene standards and frozen the same day to lock in quality safely."
             />
             <FeatureCard
-              icon={<SnowflakeIcon />}
+              icon={<GoPackage size={22} />}
               title="Why Frozen Food"
               description="Done right, freezing preserves flavor at its peak — it's convenience without the compromise."
             />

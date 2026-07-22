@@ -32,7 +32,7 @@ export function Footer() {
           <p className="text-sm font-semibold uppercase tracking-wide text-white/50">Contact</p>
           <ul className="mt-4 space-y-2 text-sm text-white/80">
             <li>{CONTACT.phone}</li>
-            <li>{CONTACT.addressPlaceholder}</li>
+            <li>{CONTACT.address}</li>
             <li>
               <a href={CONTACT.facebook} className="hover:text-accent">
                 Facebook

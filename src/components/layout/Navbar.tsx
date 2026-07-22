@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button'
 import { NAV_LINKS } from '@/constants/site'
 import logo from '@/assets/logo.png'
 import { cn } from '@/utils/cn'
+import { FiX, FiMenu } from 'react-icons/fi'
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -47,15 +48,7 @@ export function Navbar() {
           onClick={() => setIsMenuOpen((open) => !open)}
         >
           <span className="sr-only">Toggle menu</span>
-          {isMenuOpen ? (
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          ) : (
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          )}
+          {isMenuOpen ? <FiX size={22} aria-hidden="true" /> : <FiMenu size={22} aria-hidden="true" />}
         </button>
       </Container>
 

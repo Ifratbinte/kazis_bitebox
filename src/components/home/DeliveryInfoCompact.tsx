@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
 import { Container } from '@/components/ui/Container'
-import { TruckIcon, SnowflakeIcon, ClockIcon } from '@/components/ui/icons'
+import { FiTruck, FiClock } from 'react-icons/fi'
+import { GoPackage } from "react-icons/go";
 
 const points = [
-  { icon: <TruckIcon />, label: 'Delivering across Dhaka' },
-  { icon: <SnowflakeIcon />, label: 'Insulated packaging, still frozen on arrival' },
-  { icon: <ClockIcon />, label: 'Same or next-day delivery' },
+  { icon: <FiTruck size={18} />, label: 'Delivering across Dhaka' },
+  { icon: <GoPackage size={18} />, label: 'Insulated packaging, still frozen on arrival' },
+  { icon: <FiClock size={18} />, label: 'Same or next-day delivery' },
 ]
 
 export function DeliveryInfoCompact() {

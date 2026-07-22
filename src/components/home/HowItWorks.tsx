@@ -26,8 +26,26 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="py-16 sm:py-20">
-      <Container>
+    <section className="relative overflow-hidden py-16 sm:py-20">
+      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+        <svg className="absolute -top-10 -right-10 h-64 w-64 text-accent/10" viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="100" fill="currentColor" />
+        </svg>
+        <svg className="absolute -bottom-20 -left-20 h-80 w-80 text-primary/5" viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="100" fill="currentColor" />
+        </svg>
+        <svg className="absolute top-1/2 left-1/4 h-3 w-3 text-accent/20" viewBox="0 0 12 12">
+          <circle cx="6" cy="6" r="6" fill="currentColor" />
+        </svg>
+        <svg className="absolute top-1/3 right-1/3 h-2 w-2 text-primary/15" viewBox="0 0 8 8">
+          <circle cx="4" cy="4" r="4" fill="currentColor" />
+        </svg>
+        <svg className="absolute bottom-1/4 right-1/4 h-4 w-4 text-accent/15" viewBox="0 0 16 16">
+          <circle cx="8" cy="8" r="8" fill="currentColor" />
+        </svg>
+      </div>
+
+      <Container className="relative">
         <SectionTitle
           eyebrow="How it works"
           title="From order to plate in four steps"

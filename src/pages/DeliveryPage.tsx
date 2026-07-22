@@ -1,7 +1,8 @@
 import { Container } from '@/components/ui/Container'
 import { SectionTitle } from '@/components/ui/SectionTitle'
 import { FeatureCard } from '@/components/home/FeatureCard'
-import { TruckIcon, SnowflakeIcon, ShieldIcon, ClockIcon } from '@/components/ui/icons'
+import { FiTruck, FiShield, FiClock } from 'react-icons/fi'
+import { GoPackage } from "react-icons/go";
 
 export function DeliveryPage() {
   return (
@@ -14,22 +15,22 @@ export function DeliveryPage() {
 
       <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2">
         <FeatureCard
-          icon={<TruckIcon />}
+          icon={<FiTruck size={22} />}
           title="Delivery Areas"
           description="We currently deliver across Dhaka. Message us to check coverage for your area."
         />
         <FeatureCard
-          icon={<ClockIcon />}
+          icon={<FiClock size={22} />}
           title="Delivery Charges"
           description="Delivery charges depend on your location and are confirmed when we finalize your order (placeholder — final rates shared on order confirmation)."
         />
         <FeatureCard
-          icon={<SnowflakeIcon />}
+          icon={<GoPackage size={22} />}
           title="Packaging"
           description="Every order ships in insulated, food-safe packaging designed to keep products frozen in transit."
         />
         <FeatureCard
-          icon={<ShieldIcon />}
+          icon={<FiShield size={22} />}
           title="Food Handling"
           description="Orders are packed just before dispatch and handled under hygienic conditions from freezer to doorstep."
         />

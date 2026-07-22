@@ -31,6 +31,7 @@ export function HomePage() {
         title="Best Sellers"
         products={bestSellers}
         onOrderClick={openOrderModal}
+        variant="bestSeller"
       />
       <Testimonials />
       <DeliveryInfoCompact />
