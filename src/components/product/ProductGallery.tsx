@@ -27,9 +27,10 @@ export function ProductGallery({ category, imageCount }: ProductGalleryProps) {
       <div className="aspect-square overflow-hidden rounded-card bg-accent/10 p-10">
         {imgs[active] && (
           <img
+            key={active}
             src={imgs[active]}
             alt={category}
-            className="h-full w-full object-contain"
+            className="h-full w-full object-contain animate-fade-in"
           />
         )}
       </div>
@@ -41,8 +42,8 @@ export function ProductGallery({ category, imageCount }: ProductGalleryProps) {
             onClick={() => setActive(i)}
             aria-label={`View image ${i + 1}`}
             className={cn(
-              'h-16 w-16 rounded-lg border-2 bg-accent/10 p-2 transition-colors',
-              active === i ? 'border-primary' : 'border-transparent',
+              'h-16 w-16 rounded-lg border-2 bg-accent/10 p-2 transition-all duration-200',
+              active === i ? 'border-primary shadow-sm' : 'border-transparent hover:border-primary/30',
             )}
           >
             {imgs[i] && (

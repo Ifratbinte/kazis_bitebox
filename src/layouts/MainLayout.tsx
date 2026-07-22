@@ -23,7 +23,10 @@ export function MainLayout() {
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar transparent={isHomePage} />
-      <main className={cn('flex-1', isHomePage && !isScrolled ? '' : 'pt-18')}>
+      <main
+        key={location.pathname}
+        className={cn('flex-1 page-enter', isHomePage && !isScrolled ? '' : 'pt-18')}
+      >
         <Outlet />
       </main>
       <Footer />

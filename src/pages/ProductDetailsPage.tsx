@@ -6,11 +6,14 @@ import { ProductGallery } from '@/components/product/ProductGallery'
 import { ProductCard } from '@/components/product/ProductCard'
 import { OrderModal } from '@/components/product/OrderModal'
 import { useOrderModal } from '@/hooks/useOrderModal'
+import { useScrollReveal } from '@/hooks/useScrollReveal'
+import { cn } from '@/utils/cn'
 import { getProductBySlug, getRelatedProducts } from '@/data/products'
 
 export function ProductDetailsPage() {
   const { slug } = useParams<{ slug: string }>()
   const { activeProduct, openOrderModal, closeOrderModal } = useOrderModal()
+  const { ref: relatedRef, isVisible: relatedVisible } = useScrollReveal()
 
   const product = slug ? getProductBySlug(slug) : undefined
   if (!product) return <Navigate to="/shop" replace />
@@ -20,14 +23,16 @@ export function ProductDetailsPage() {
 
   return (
     <Container className="py-16">
-      <nav className="text-sm text-text-muted">
-        <Link to="/shop" className="hover:text-primary">Shop</Link> / {product.name}
+      <nav className="text-sm text-text-muted anim-fade-in is-visible">
+        <Link to="/shop" className="hover:text-primary transition-colors duration-200">Shop</Link> / {product.name}
       </nav>
 
       <div className="mt-6 grid grid-cols-1 gap-10 lg:grid-cols-2">
-        <ProductGallery category={product.category} imageCount={product.images.length} />
+        <div className="anim-fade-left is-visible">
+          <ProductGallery category={product.category} imageCount={product.images.length} />
+        </div>
 
-        <div>
+        <div className="anim-fade-right is-visible" style={{ transitionDelay: '150ms' }}>
           {product.isBestSeller && <Badge tone="primary">Best Seller</Badge>}
           <h1 className="mt-3 font-display text-3xl font-semibold text-secondary">{product.name}</h1>
           <p className="mt-2 text-text-muted">{product.tagline}</p>
@@ -43,7 +48,7 @@ export function ProductDetailsPage() {
             </span>
           </div>
 
-          <Button onClick={() => openOrderModal(product)} size="lg" className="mt-8">
+          <Button onClick={() => openOrderModal(product)} size="lg" className="mt-8 btn-press">
             Order Now
           </Button>
 
@@ -76,11 +81,19 @@ export function ProductDetailsPage() {
       </div>
 
       {related.length > 0 && (
-        <div className="mt-20">
-          <h2 className="font-display text-2xl font-semibold text-secondary">You might also like</h2>
+        <div className="mt-20" ref={relatedRef}>
+          <h2 className={cn('font-display text-2xl font-semibold text-secondary anim-fade-up', relatedVisible && 'is-visible')}>
+            You might also like
+          </h2>
           <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {related.map((p) => (
-              <ProductCard key={p.id} product={p} onOrderClick={openOrderModal} />
+            {related.map((p, index) => (
+              <div
+                key={p.id}
+                className={cn('anim-fade-up', relatedVisible && 'is-visible')}
+                style={{ transitionDelay: `${(index + 1) * 150}ms` }}
+              >
+                <ProductCard product={p} onOrderClick={openOrderModal} />
+              </div>
             ))}
           </div>
         </div>

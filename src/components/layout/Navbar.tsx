@@ -59,7 +59,7 @@ export function Navbar({ transparent = false }: NavbarProps) {
                 to={link.path}
                 className={({ isActive }) =>
                   cn(
-                    'text-sm font-medium text-secondary/80 transition-colors hover:text-primary',
+                    'text-sm font-medium text-secondary/80 transition-all duration-200 hover:text-primary hover:tracking-wide',
                     isActive && 'text-primary',
                   )
                 }
@@ -70,7 +70,7 @@ export function Navbar({ transparent = false }: NavbarProps) {
           </nav>
 
           <div className="hidden md:block">
-            <Button as="a" href="/shop" size="sm">
+            <Button as="a" href="/shop" size="sm" className="btn-press">
               Order Now
             </Button>
           </div>
@@ -145,8 +145,12 @@ export function Navbar({ transparent = false }: NavbarProps) {
 
         <nav className="relative flex-1 overflow-y-auto px-4 py-6" aria-label="Mobile navigation">
           <ul className="flex flex-col gap-1">
-            {NAV_LINKS.map((link) => (
-              <li key={link.path}>
+            {NAV_LINKS.map((link, index) => (
+              <li
+                key={link.path}
+                className={cn('transition-all duration-300', isMenuOpen ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4')}
+                style={{ transitionDelay: isMenuOpen ? `${index * 50}ms` : '0ms' }}
+              >
                 <RouterNavLink
                   to={link.path}
                   onClick={() => setIsMenuOpen(false)}
@@ -167,7 +171,7 @@ export function Navbar({ transparent = false }: NavbarProps) {
         </nav>
 
         <div className="border-t border-border px-4 py-5">
-          <Button as="a" href="/shop" size="sm" className="w-full">
+          <Button as="a" href="/shop" size="sm" className="w-full btn-press">
             Order Now
           </Button>
         </div>

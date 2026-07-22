@@ -26,23 +26,31 @@ export function ShopPage() {
 
   return (
     <Container className="py-16">
-      <SectionTitle
-        align="left"
-        eyebrow="Shop"
-        title="All Products"
-        description="Every BiteBox product, ready to order in the pack size that fits you."
-        className="mx-0"
-      />
+      <div className="anim-fade-up is-visible">
+        <SectionTitle
+          align="left"
+          eyebrow="Shop"
+          title="All Products"
+          description="Every BiteBox product, ready to order in the pack size that fits you."
+          className="mx-0"
+        />
+      </div>
 
-      <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between anim-fade-up is-visible" style={{ transitionDelay: '100ms' }}>
         <CategoryFilter categories={CATEGORIES} active={category} onChange={setCategory} />
         <SearchBar value={search} onChange={setSearch} />
       </div>
 
       {filtered.length > 0 ? (
         <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((product) => (
-            <ProductCard key={product.id} product={product} onOrderClick={openOrderModal} />
+          {filtered.map((product, index) => (
+            <div
+              key={product.id}
+              className="anim-fade-up is-visible"
+              style={{ transitionDelay: `${(index + 1) * 100}ms` }}
+            >
+              <ProductCard product={product} onOrderClick={openOrderModal} />
+            </div>
           ))}
         </div>
       ) : (

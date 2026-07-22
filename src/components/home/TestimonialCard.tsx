@@ -6,13 +6,13 @@ export function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   const [showEnglish, setShowEnglish] = useState(false)
 
   return (
-    <div className="flex h-full flex-col rounded-card border border-border bg-surface p-6">
+    <div className="card-hover flex h-full flex-col rounded-card border border-border bg-surface p-6 hover:border-primary/20">
       <div className="flex gap-1">
         {Array.from({ length: 5 }).map((_, i) => (
           <FiStar
             key={i}
             size={16}
-            className={i < testimonial.rating ? 'fill-gold text-gold' : 'text-border'}
+            className={`transition-all duration-200 ${i < testimonial.rating ? 'fill-gold text-gold' : 'text-border'}`}
           />
         ))}
       </div>
@@ -23,7 +23,7 @@ export function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
         <button
           type="button"
           onClick={() => setShowEnglish(!showEnglish)}
-          className="text-xs text-primary hover:underline"
+          className="text-xs text-primary transition-all duration-200 hover:underline hover:tracking-wide"
         >
           {showEnglish ? 'বাংলায় পড়ুন' : 'Read in English'}
         </button>

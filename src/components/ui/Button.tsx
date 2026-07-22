@@ -6,9 +6,9 @@ type Variant = 'primary' | 'secondary' | 'outline' | 'ghost'
 type Size = 'sm' | 'md' | 'lg'
 
 const variantStyles: Record<Variant, string> = {
-  primary: 'bg-primary text-white hover:bg-primary-dark',
-  secondary: 'bg-secondary text-white hover:bg-secondary/90',
-  outline: 'border border-secondary text-secondary hover:bg-secondary hover:text-white',
+  primary: 'bg-primary text-white hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25',
+  secondary: 'bg-secondary text-white hover:bg-secondary/90 hover:shadow-lg',
+  outline: 'border border-secondary text-secondary hover:bg-secondary hover:text-white hover:shadow-lg',
   ghost: 'text-secondary hover:bg-black/5',
 }
 
@@ -19,7 +19,7 @@ const sizeStyles: Record<Size, string> = {
 }
 
 const baseStyles =
-  'inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
+  'inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent btn-press'
 
 interface ButtonOwnProps {
   variant?: Variant

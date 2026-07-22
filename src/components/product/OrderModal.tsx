@@ -43,14 +43,14 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-end justify-center bg-secondary/50 p-0 sm:items-center sm:p-4"
+      className="fixed inset-0 z-100 flex items-end justify-center bg-secondary/50 p-0 sm:items-center sm:p-4 modal-backdrop"
       role="dialog"
       aria-modal="true"
       aria-labelledby="order-modal-title"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-lg rounded-t-card bg-surface p-6 shadow-xl sm:rounded-card"
+        className="w-full max-w-lg rounded-t-card bg-surface p-6 shadow-xl sm:rounded-card modal-content"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between">
@@ -61,7 +61,7 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="rounded-full p-1 text-text-muted hover:bg-black/5"
+            className="btn-press rounded-full p-1 text-text-muted transition-colors hover:bg-black/5"
           >
             <FiX size={20} aria-hidden="true" />
           </button>
@@ -73,8 +73,8 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
             {product.packSizes.map((p, i) => (
               <label
                 key={p.label}
-                className={`flex cursor-pointer items-center justify-between rounded-lg border px-4 py-3 text-sm transition-colors ${
-                  i === packIndex ? 'border-primary bg-primary/5' : 'border-border'
+                className={`flex cursor-pointer items-center justify-between rounded-lg border px-4 py-3 text-sm transition-all duration-200 ${
+                  i === packIndex ? 'border-primary bg-primary/5 shadow-sm' : 'border-border hover:border-primary/30'
                 }`}
               >
                 <span className="flex items-center gap-3">
@@ -102,7 +102,7 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
               type="button"
               aria-label="Decrease quantity"
               onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-              className="h-8 w-8 rounded-full border border-border text-secondary hover:bg-black/5"
+              className="btn-press h-8 w-8 rounded-full border border-border text-secondary transition-colors hover:bg-black/5"
             >
               −
             </button>
@@ -111,7 +111,7 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
               type="button"
               aria-label="Increase quantity"
               onClick={() => setQuantity((q) => q + 1)}
-              className="h-8 w-8 rounded-full border border-border text-secondary hover:bg-black/5"
+              className="btn-press h-8 w-8 rounded-full border border-border text-secondary transition-colors hover:bg-black/5"
             >
               +
             </button>
@@ -123,7 +123,7 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
             href={orderLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 rounded-lg bg-[#006AFF] px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+            className="btn-press flex items-center justify-center gap-2 rounded-lg bg-[#006AFF] px-4 py-3 text-sm font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-lg"
           >
             <TbBrandMessenger size={20} aria-hidden="true" />
             <span className="hidden sm:inline">Messenger</span>
@@ -132,14 +132,14 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
             href={whatsappLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 rounded-lg bg-[#25D366] px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+            className="btn-press flex items-center justify-center gap-2 rounded-lg bg-[#25D366] px-4 py-3 text-sm font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-lg"
           >
             <FaWhatsapp size={20} aria-hidden="true" />
             <span className="hidden sm:inline">WhatsApp</span>
           </a>
           <a
             href={`tel:${CONTACT.phone}`}
-            className="flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+            className="btn-press flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-lg"
           >
             <FiPhone size={20} aria-hidden="true" />
             <span className="hidden sm:inline">Call</span>

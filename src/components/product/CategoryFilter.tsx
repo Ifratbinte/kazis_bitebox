@@ -15,10 +15,10 @@ export function CategoryFilter({ categories, active, onChange }: CategoryFilterP
           type="button"
           onClick={() => onChange(category)}
           className={cn(
-            'rounded-full border px-4 py-2 text-sm font-medium transition-colors',
+            'rounded-full border px-4 py-2 text-sm font-medium transition-all duration-200 btn-press',
             active === category
-              ? 'border-primary bg-primary text-white'
-              : 'border-border text-secondary hover:border-primary/50',
+              ? 'border-primary bg-primary text-white shadow-md shadow-primary/20'
+              : 'border-border text-secondary hover:border-primary/50 hover:shadow-sm',
           )}
         >
           {category}

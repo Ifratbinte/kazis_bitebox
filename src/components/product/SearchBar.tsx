@@ -20,7 +20,7 @@ export function SearchBar({ value, onChange, placeholder = 'Search products...' 
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         aria-label="Search products"
-        className="w-full rounded-full border border-border bg-surface py-2.5 pl-9 pr-4 text-sm text-text outline-none focus:border-primary"
+        className="w-full rounded-full border border-border bg-surface py-2.5 pl-9 pr-4 text-sm text-text outline-none transition-all duration-200 focus:border-primary focus:shadow-md focus:shadow-primary/10"
       />
     </div>
   )

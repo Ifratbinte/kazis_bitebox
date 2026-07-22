@@ -72,7 +72,7 @@ export function TestimonialSlider({ testimonials }: TestimonialSliderProps) {
       <button
         type="button"
         onClick={goToPrevious}
-        className="absolute -left-2 top-1/2 z-10 -translate-y-1/2 rounded-full border border-border bg-surface p-2 shadow-md transition-colors hover:bg-primary/10 sm:-left-4"
+        className="absolute -left-2 top-1/2 z-10 -translate-y-1/2 rounded-full border border-border bg-surface p-2 shadow-md transition-all duration-200 hover:bg-primary/10 hover:shadow-lg hover:scale-110 btn-press sm:-left-4"
         aria-label="Previous testimonial"
       >
         <FiChevronLeft size={20} className="text-secondary" />
@@ -80,7 +80,7 @@ export function TestimonialSlider({ testimonials }: TestimonialSliderProps) {
       <button
         type="button"
         onClick={goToNext}
-        className="absolute -right-2 top-1/2 z-10 -translate-y-1/2 rounded-full border border-border bg-surface p-2 shadow-md transition-colors hover:bg-primary/10 sm:-right-4"
+        className="absolute -right-2 top-1/2 z-10 -translate-y-1/2 rounded-full border border-border bg-surface p-2 shadow-md transition-all duration-200 hover:bg-primary/10 hover:shadow-lg hover:scale-110 btn-press sm:-right-4"
         aria-label="Next testimonial"
       >
         <FiChevronRight size={20} className="text-secondary" />

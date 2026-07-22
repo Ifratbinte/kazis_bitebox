@@ -51,7 +51,7 @@ export function ContactForm() {
       <Input id="contact-email" name="email" type="email" label="Email" required />
       <Input id="contact-phone" name="phone" type="tel" label="Phone" />
       <Textarea id="contact-message" name="message" label="Message" required rows={4} />
-      <Button type="submit" className="w-full">
+      <Button type="submit" className="w-full btn-press">
         Send Message
       </Button>
     </form>
