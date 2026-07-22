@@ -48,7 +48,7 @@ export function ProductDetailsPage() {
             </span>
           </div> */}
 
-          <Button onClick={() => openOrderModal(product)} size="lg" className="mt-8 btn-press">
+          <Button onClick={() => openOrderModal(product)} size="md" className="mt-8 btn-press">
             Order Now
           </Button>
 
