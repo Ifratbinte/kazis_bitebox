@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import type { Product } from '@/types'
 import { getOrderLink } from '@/services/orderMessage'
 import { FiX, FiPhone } from 'react-icons/fi'
@@ -41,9 +42,9 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
   const orderLink = getOrderLink(orderRequest, 'messenger')
   const whatsappLink = getOrderLink(orderRequest, 'whatsapp')
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-100 flex items-end justify-center bg-secondary/50 p-0 sm:items-center sm:p-4 modal-backdrop"
+      className="fixed inset-0 z-[100] flex items-end justify-center bg-secondary/50 p-0 sm:items-center sm:p-4 modal-backdrop"
       role="dialog"
       aria-modal="true"
       aria-labelledby="order-modal-title"
@@ -149,6 +150,7 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
           We'll confirm availability and delivery time there.
         </p>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
