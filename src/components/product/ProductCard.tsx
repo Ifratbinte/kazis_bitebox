@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
 import type { Product } from '@/types'
 import { Badge } from '@/components/ui/Badge'
+import { useCart } from '@/context/CartContext'
 import { bestSellImages, productImages } from '@/data/productImages'
+import { FiShoppingBag } from 'react-icons/fi'
 
 interface ProductCardProps {
   product: Product
@@ -9,10 +11,25 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, onOrderClick }: ProductCardProps) {
+  const { addItem } = useCart()
   const startingPrice = Math.min(...product.packSizes.map((p) => p.price))
+  const defaultPack = product.packSizes[0]
   const image = product.isBestSeller
     ? bestSellImages[`best-${product.slug}`] ?? productImages[product.slug]
     : productImages[product.slug]
+
+  function handleAddToCart() {
+    addItem({
+      productId: product.id,
+      productName: product.name,
+      productSlug: product.slug,
+      packLabel: defaultPack.label,
+      packWeight: defaultPack.weight,
+      price: defaultPack.price,
+      quantity: 1,
+      image,
+    })
+  }
 
   return (
     <div className="group card-hover flex flex-col overflow-hidden rounded-card border border-border bg-surface shadow-sm hover:border-primary/20">
@@ -42,6 +59,17 @@ export function ProductCard({ product, onOrderClick }: ProductCardProps) {
           <p className="font-semibold text-secondary">
             From ৳{startingPrice}
           </p>
+        </div>
+
+        <div className="mt-3 flex gap-2">
+          <button
+            type="button"
+            onClick={handleAddToCart}
+            className="btn-press flex flex-1 items-center justify-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-medium text-secondary transition-all duration-200 hover:border-primary/30 hover:bg-primary/5"
+          >
+            <FiShoppingBag size={15} />
+            Add to Cart
+          </button>
           <button
             type="button"
             onClick={() => onOrderClick(product)}

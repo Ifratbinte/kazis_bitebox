@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { Link } from 'react-router-dom'
 import type { Product } from '@/types'
 import { getOrderLink } from '@/services/orderMessage'
-import { FiX, FiPhone } from 'react-icons/fi'
+import { useCart } from '@/context/CartContext'
+import { bestSellImages, productImages } from '@/data/productImages'
+import { FiX, FiPhone, FiShoppingBag } from 'react-icons/fi'
 import { TbBrandMessenger } from 'react-icons/tb'
 import { FaWhatsapp } from 'react-icons/fa'
 import { CONTACT } from '@/constants/site'
@@ -15,10 +18,13 @@ interface OrderModalProps {
 export function OrderModal({ product, onClose }: OrderModalProps) {
   const [packIndex, setPackIndex] = useState(0)
   const [quantity, setQuantity] = useState(1)
+  const [addedToCart, setAddedToCart] = useState(false)
+  const { addItem } = useCart()
 
   useEffect(() => {
     setPackIndex(0)
     setQuantity(1)
+    setAddedToCart(false)
   }, [product])
 
   useEffect(() => {
@@ -37,10 +43,28 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
 
   if (!product) return null
 
-  const pack = product.packSizes[packIndex]
-  const orderRequest = { productName: product.name, packSize: `${pack.label} - ${pack.weight}`, quantity }
+  const currentProduct = product
+  const pack = currentProduct.packSizes[packIndex]
+  const orderRequest = { productName: currentProduct.name, packSize: `${pack.label} - ${pack.weight}`, quantity }
   const orderLink = getOrderLink(orderRequest, 'messenger')
   const whatsappLink = getOrderLink(orderRequest, 'whatsapp')
+  const image = currentProduct.isBestSeller
+    ? bestSellImages[`best-${currentProduct.slug}`] ?? productImages[currentProduct.slug]
+    : productImages[currentProduct.slug]
+
+  function handleAddToCart() {
+    addItem({
+      productId: currentProduct.id,
+      productName: currentProduct.name,
+      productSlug: currentProduct.slug,
+      packLabel: pack.label,
+      packWeight: pack.weight,
+      price: pack.price,
+      quantity,
+      image,
+    })
+    setAddedToCart(true)
+  }
 
   return createPortal(
     <div
@@ -119,7 +143,41 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
           </div>
         </div>
 
-        <div className="mt-6 grid grid-cols-3 gap-3">
+        {/* Add to Cart Button */}
+        <div className="mt-5">
+          {addedToCart ? (
+            <div className="flex items-center justify-center gap-3">
+              <span className="text-sm font-medium text-success">Added to cart!</span>
+              <Link
+                to="/cart"
+                onClick={onClose}
+                className="text-sm font-semibold text-primary hover:underline"
+              >
+                View Cart →
+              </Link>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={handleAddToCart}
+              className="btn-press flex w-full items-center justify-center gap-2 rounded-lg border-2 border-secondary bg-secondary px-4 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-secondary/90 hover:shadow-lg"
+            >
+              <FiShoppingBag size={18} />
+              Add to Cart — ৳{pack.price * quantity}
+            </button>
+          )}
+        </div>
+
+        <div className="relative my-4">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-border" />
+          </div>
+          <div className="relative flex justify-center text-xs">
+            <span className="bg-surface px-3 text-text-muted">or order directly via</span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-3">
           <a
             href={orderLink}
             target="_blank"

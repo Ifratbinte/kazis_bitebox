@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
-import { NavLink as RouterNavLink } from 'react-router-dom'
+import { NavLink as RouterNavLink, Link } from 'react-router-dom'
 import { Container } from '@/components/ui/Container'
 import { Button } from '@/components/ui/Button'
 import { NAV_LINKS } from '@/constants/site'
+import { useCart } from '@/context/CartContext'
 import logo from '@/assets/logo.png'
 import { cn } from '@/utils/cn'
-import { FiX, FiMenu } from 'react-icons/fi'
+import { FiX, FiMenu, FiShoppingBag } from 'react-icons/fi'
 
 interface NavbarProps {
   transparent?: boolean
@@ -14,6 +15,7 @@ interface NavbarProps {
 export function Navbar({ transparent = false }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const { itemCount } = useCart()
 
   useEffect(() => {
     function handleScroll() {
@@ -69,22 +71,48 @@ export function Navbar({ transparent = false }: NavbarProps) {
             ))}
           </nav>
 
-          <div className="hidden md:block">
+          <div className="hidden items-center gap-4 md:flex">
+            <Link
+              to="/cart"
+              className="relative flex h-10 w-10 items-center justify-center rounded-full text-secondary transition-colors hover:bg-primary/10 hover:text-primary"
+              aria-label={`Cart (${itemCount} items)`}
+            >
+              <FiShoppingBag size={20} />
+              {itemCount > 0 && (
+                <span className="absolute -right-0.5 -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white animate-bounce-in">
+                  {itemCount > 99 ? '99+' : itemCount}
+                </span>
+              )}
+            </Link>
             <Button as="a" href="/shop" size="sm" className="btn-press">
               Order Now
             </Button>
           </div>
 
-          <button
-            type="button"
-            className="flex h-10 w-10 items-center justify-center rounded-full text-secondary md:hidden"
-            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={isMenuOpen}
-            onClick={() => setIsMenuOpen((open) => !open)}
-          >
-            <span className="sr-only">Toggle menu</span>
-            {isMenuOpen ? <FiX size={22} aria-hidden="true" /> : <FiMenu size={22} aria-hidden="true" />}
-          </button>
+          <div className="flex items-center gap-2 md:hidden">
+            <Link
+              to="/cart"
+              className="relative flex h-10 w-10 items-center justify-center rounded-full text-secondary"
+              aria-label={`Cart (${itemCount} items)`}
+            >
+              <FiShoppingBag size={20} />
+              {itemCount > 0 && (
+                <span className="absolute -right-0.5 -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">
+                  {itemCount > 99 ? '99+' : itemCount}
+                </span>
+              )}
+            </Link>
+            <button
+              type="button"
+              className="flex h-10 w-10 items-center justify-center rounded-full text-secondary"
+              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isMenuOpen}
+              onClick={() => setIsMenuOpen((open) => !open)}
+            >
+              <span className="sr-only">Toggle menu</span>
+              {isMenuOpen ? <FiX size={22} aria-hidden="true" /> : <FiMenu size={22} aria-hidden="true" />}
+            </button>
+          </div>
         </Container>
       </header>
 

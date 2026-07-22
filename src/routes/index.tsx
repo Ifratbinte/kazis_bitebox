@@ -3,6 +3,8 @@ import { MainLayout } from '@/layouts/MainLayout'
 import { HomePage } from '@/pages/HomePage'
 import { ShopPage } from '@/pages/ShopPage'
 import { ProductDetailsPage } from '@/pages/ProductDetailsPage'
+import { CartPage } from '@/pages/CartPage'
+import { CheckoutPage } from '@/pages/CheckoutPage'
 import { AboutPage } from '@/pages/AboutPage'
 import { FAQPage } from '@/pages/FAQPage'
 import { DeliveryPage } from '@/pages/DeliveryPage'
@@ -20,6 +22,8 @@ export const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: 'shop', element: <ShopPage /> },
       { path: 'shop/:slug', element: <ProductDetailsPage /> },
+      { path: 'cart', element: <CartPage /> },
+      { path: 'checkout', element: <CheckoutPage /> },
       { path: 'about', element: <AboutPage /> },
       { path: 'faq', element: <FAQPage /> },
       { path: 'delivery', element: <DeliveryPage /> },

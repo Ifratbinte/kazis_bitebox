@@ -1,23 +1,42 @@
 import { CONTACT } from '@/constants/site'
-import type { OrderChannel, OrderRequest } from '@/types'
+import type { CartItem, CustomerInfo, OrderChannel, OrderRequest } from '@/types'
 
-/**
- * Builds the message text sent when a customer orders.
- * Keeping this as a pure function (not tied to any channel) means
- * swapping the transport later (e.g. to a real order API) only
- * requires changing how the message/result is used, not how it's built.
- */
-function buildOrderText({ productName, packSize, quantity }: OrderRequest): string {
+function buildSingleOrderText({ productName, packSize, quantity }: OrderRequest): string {
   return `Hi Kazi's BiteBox! I'd like to order:\n${quantity} x ${productName} (${packSize})`
 }
 
-/**
- * Returns a deep link for the given channel with the order pre-filled.
- * This is the seam that becomes a real checkout/API call later —
- * callers only ever need a link or a submit function, not channel details.
- */
+function buildCartOrderText(items: CartItem[], customer: CustomerInfo): string {
+  const lines = items.map((i) => `${i.quantity} x ${i.productName} (${i.packLabel} - ${i.packWeight}) — ৳${i.price * i.quantity}`)
+  const total = items.reduce((sum, i) => sum + i.price * i.quantity, 0)
+
+  let text = `Hi Kazi's BiteBox! I'd like to place an order:\n\n`
+  text += lines.join('\n')
+  text += `\n\nTotal: ৳${total}`
+  text += `\n\n--- Delivery Info ---`
+  text += `\nName: ${customer.name}`
+  text += `\nPhone: ${customer.phone}`
+  if (customer.email) text += `\nEmail: ${customer.email}`
+  text += `\nAddress: ${customer.address}`
+  if (customer.notes) text += `\nNote: ${customer.notes}`
+
+  return text
+}
+
 export function getOrderLink(order: OrderRequest, channel: OrderChannel = 'messenger'): string {
-  const text = buildOrderText(order)
+  const text = buildSingleOrderText(order)
+
+  switch (channel) {
+    case 'messenger':
+      return `${CONTACT.messenger}?text=${encodeURIComponent(text)}`
+    case 'whatsapp':
+      return `https://wa.me/${CONTACT.whatsapp.replace(/\s+/g, '')}?text=${encodeURIComponent(text)}`
+    case 'phone':
+      return `tel:${CONTACT.phone.replace(/\s+/g, '')}`
+  }
+}
+
+export function getCartOrderLink(items: CartItem[], customer: CustomerInfo, channel: OrderChannel = 'messenger'): string {
+  const text = buildCartOrderText(items, customer)
 
   switch (channel) {
     case 'messenger':

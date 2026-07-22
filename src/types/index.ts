@@ -47,3 +47,22 @@ export interface OrderRequest {
   packSize: string
   quantity: number
 }
+
+export interface CartItem {
+  productId: string
+  productName: string
+  productSlug: string
+  packLabel: string
+  packWeight: string
+  price: number
+  quantity: number
+  image?: string
+}
+
+export interface CustomerInfo {
+  name: string
+  phone: string
+  email: string
+  address: string
+  notes: string
+}
