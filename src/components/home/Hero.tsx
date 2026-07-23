@@ -3,7 +3,10 @@ import { Container } from '@/components/ui/Container'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { productImages } from '@/data/productImages'
-import { products } from '@/data/products'
+import { momoProducts } from '@/data/products/momos'
+import { rollProducts } from '@/data/products/rolls'
+
+const products = [...momoProducts, ...rollProducts]
 import { cn } from '@/utils/cn'
 
 export function Hero() {
