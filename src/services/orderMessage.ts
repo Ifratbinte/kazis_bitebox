@@ -1,8 +1,9 @@
 import { CONTACT } from '@/constants/site'
 import type { CartItem, CustomerInfo, OrderChannel, OrderRequest } from '@/types'
 
-function buildSingleOrderText({ productName, packSize, quantity }: OrderRequest): string {
-  return `Hi Kazi's BiteBox! I'd like to order:\n${quantity} x ${productName} (${packSize})`
+function buildSingleOrderText({ productName, packs }: OrderRequest): string {
+  const lines = packs.map((p) => `${p.quantity} x ${productName} (${p.packSize})`)
+  return `Hi Kazi's BiteBox! I'd like to order:\n${lines.join('\n')}`
 }
 
 function buildCartOrderText(items: CartItem[], customer: CustomerInfo, orderId?: string): string {

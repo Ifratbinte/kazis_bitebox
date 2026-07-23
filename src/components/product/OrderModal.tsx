@@ -16,14 +16,12 @@ interface OrderModalProps {
 }
 
 export function OrderModal({ product, onClose }: OrderModalProps) {
-  const [packIndex, setPackIndex] = useState(0)
-  const [quantity, setQuantity] = useState(1)
+  const [selectedPacks, setSelectedPacks] = useState<Record<number, number>>({})
   const [addedToCart, setAddedToCart] = useState(false)
   const { addItem } = useCart()
 
   useEffect(() => {
-    setPackIndex(0)
-    setQuantity(1)
+    setSelectedPacks({})
     setAddedToCart(false)
   }, [product])
 
@@ -44,8 +42,40 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
   if (!product) return null
 
   const currentProduct = product
-  const pack = currentProduct.packSizes[packIndex]
-  const orderRequest = { productName: currentProduct.name, packSize: `${pack.label} - ${pack.weight}`, quantity }
+
+  function togglePack(index: number) {
+    setSelectedPacks((prev) => {
+      const next = { ...prev }
+      if (index in next) {
+        delete next[index]
+      } else {
+        next[index] = 1
+      }
+      return next
+    })
+    setAddedToCart(false)
+  }
+
+  function updatePackQuantity(index: number, delta: number) {
+    setSelectedPacks((prev) => {
+      const current = prev[index] ?? 1
+      const nextQty = Math.max(1, current + delta)
+      return { ...prev, [index]: nextQty }
+    })
+    setAddedToCart(false)
+  }
+
+  const selectedIndices = Object.keys(selectedPacks).map(Number)
+  const totalPrice = selectedIndices.reduce(
+    (sum, i) => sum + currentProduct.packSizes[i].price * selectedPacks[i],
+    0,
+  )
+
+  const orderPacks = selectedIndices.map((i) => ({
+    packSize: `${currentProduct.packSizes[i].label} - ${currentProduct.packSizes[i].weight}`,
+    quantity: selectedPacks[i],
+  }))
+  const orderRequest = { productName: currentProduct.name, packs: orderPacks }
   const orderLink = getOrderLink(orderRequest, 'messenger')
   const whatsappLink = getOrderLink(orderRequest, 'whatsapp')
   const image = currentProduct.isBestSeller
@@ -53,15 +83,18 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
     : productImages[currentProduct.slug]
 
   function handleAddToCart() {
-    addItem({
-      productId: currentProduct.id,
-      productName: currentProduct.name,
-      productSlug: currentProduct.slug,
-      packLabel: pack.label,
-      packWeight: pack.weight,
-      price: pack.price,
-      quantity,
-      image,
+    selectedIndices.forEach((i) => {
+      const pack = currentProduct.packSizes[i]
+      addItem({
+        productId: currentProduct.id,
+        productName: currentProduct.name,
+        productSlug: currentProduct.slug,
+        packLabel: pack.label,
+        packWeight: pack.weight,
+        price: pack.price,
+        quantity: selectedPacks[i],
+        image,
+      })
     })
     setAddedToCart(true)
   }
@@ -75,7 +108,7 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
       onClick={onClose}
     >
       <div
-        className="w-full max-w-lg rounded-t-card bg-surface p-6 shadow-xl sm:rounded-card modal-content"
+        className="w-full max-w-lg rounded-t-card bg-surface p-6 shadow-xl sm:rounded-card modal-content max-h-[85vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between">
@@ -93,57 +126,61 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
         </div>
 
         <fieldset className="mt-5">
-          <legend className="text-sm font-semibold text-secondary">Pack size</legend>
+          <legend className="text-sm font-semibold text-secondary">Pack size (select one or more)</legend>
           <div className="mt-2 grid grid-cols-1 gap-2">
-            {product.packSizes.map((p, i) => (
-              <label
-                key={p.label}
-                className={`flex cursor-pointer items-center justify-between rounded-lg border px-4 py-3 text-sm transition-all duration-200 ${
-                  i === packIndex ? 'border-primary bg-primary/5 shadow-sm' : 'border-border hover:border-primary/30'
-                }`}
-              >
-                <span className="flex items-center gap-3">
-                  <input
-                    type="radio"
-                    name="packSize"
-                    checked={i === packIndex}
-                    onChange={() => setPackIndex(i)}
-                    className="accent-[#C1272D]"
-                  />
-                  <span>
-                    {p.label} <span className="text-text-muted">({p.weight})</span>
-                  </span>
-                </span>
-                <span className="font-semibold text-secondary">৳{p.price}</span>
-              </label>
-            ))}
+            {product.packSizes.map((p, i) => {
+              const isSelected = i in selectedPacks
+              const packQty = selectedPacks[i] ?? 1
+              return (
+                <div
+                  key={p.label}
+                  className={`rounded-lg border px-4 py-3 text-sm transition-all duration-200 ${
+                    isSelected ? 'border-primary bg-primary/5 shadow-sm' : 'border-border hover:border-primary/30'
+                  }`}
+                >
+                  <label className="flex cursor-pointer items-center justify-between">
+                    <span className="flex items-center gap-3">
+                      <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={() => togglePack(i)}
+                        className="accent-[#C1272D]"
+                      />
+                      <span>
+                        {p.label} <span className="text-text-muted">({p.weight})</span>
+                      </span>
+                    </span>
+                    <span className="font-semibold text-secondary">৳{p.price}</span>
+                  </label>
+                  {isSelected && (
+                    <div className="mt-2 flex items-center justify-end gap-3 border-t border-primary/10 pt-2">
+                      <span className="text-xs text-text-muted">Qty</span>
+                      <button
+                        type="button"
+                        aria-label={`Decrease quantity for ${p.label}`}
+                        onClick={() => updatePackQuantity(i, -1)}
+                        className="btn-press h-7 w-7 rounded-full border border-border text-secondary transition-colors hover:bg-black/5"
+                      >
+                        −
+                      </button>
+                      <span className="w-5 text-center text-sm font-semibold">{packQty}</span>
+                      <button
+                        type="button"
+                        aria-label={`Increase quantity for ${p.label}`}
+                        onClick={() => updatePackQuantity(i, 1)}
+                        className="btn-press h-7 w-7 rounded-full border border-border text-secondary transition-colors hover:bg-black/5"
+                      >
+                        +
+                      </button>
+                      <span className="text-xs font-medium text-text-muted">৳{p.price * packQty}</span>
+                    </div>
+                  )}
+                </div>
+              )
+            })}
           </div>
         </fieldset>
 
-        <div className="mt-5 flex items-center justify-between">
-          <span className="text-sm font-semibold text-secondary">Quantity</span>
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              aria-label="Decrease quantity"
-              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-              className="btn-press h-8 w-8 rounded-full border border-border text-secondary transition-colors hover:bg-black/5"
-            >
-              −
-            </button>
-            <span className="w-6 text-center font-semibold">{quantity}</span>
-            <button
-              type="button"
-              aria-label="Increase quantity"
-              onClick={() => setQuantity((q) => q + 1)}
-              className="btn-press h-8 w-8 rounded-full border border-border text-secondary transition-colors hover:bg-black/5"
-            >
-              +
-            </button>
-          </div>
-        </div>
-
-        {/* Add to Cart Button */}
         <div className="mt-5">
           {addedToCart ? (
             <div className="flex items-center justify-center gap-3">
@@ -160,10 +197,13 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
             <button
               type="button"
               onClick={handleAddToCart}
-              className="btn-press flex w-full items-center justify-center gap-2 rounded-lg border-2 border-primary bg-primary hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25 px-4 py-3 text-sm font-semibold text-white transition-all duration-200"
+              disabled={selectedIndices.length === 0}
+              className="btn-press flex w-full items-center justify-center gap-2 rounded-lg border-2 border-primary bg-primary px-4 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:shadow-none"
             >
               <FiShoppingBag size={18} />
-              Add to Cart — ৳{pack.price * quantity}
+              {selectedIndices.length === 0
+                ? 'Select a pack size'
+                : `Add to Cart — ৳${totalPrice}`}
             </button>
           )}
         </div>

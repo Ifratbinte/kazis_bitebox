@@ -42,10 +42,14 @@ export interface NavLink {
 
 export type OrderChannel = 'messenger' | 'whatsapp' | 'phone'
 
-export interface OrderRequest {
-  productName: string
+export interface OrderPackSelection {
   packSize: string
   quantity: number
+}
+
+export interface OrderRequest {
+  productName: string
+  packs: OrderPackSelection[]
 }
 
 export interface CartItem {
