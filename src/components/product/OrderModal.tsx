@@ -160,7 +160,7 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
             <button
               type="button"
               onClick={handleAddToCart}
-              className="btn-press flex w-full items-center justify-center gap-2 rounded-lg border-2 border-secondary bg-secondary px-4 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-secondary/90 hover:shadow-lg"
+              className="btn-press flex w-full items-center justify-center gap-2 rounded-lg border-2 border-primary bg-primary hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25 px-4 py-3 text-sm font-semibold text-white transition-all duration-200"
             >
               <FiShoppingBag size={18} />
               Add to Cart — ৳{pack.price * quantity}
@@ -198,7 +198,7 @@ export function OrderModal({ product, onClose }: OrderModalProps) {
           </a>
           <a
             href={`tel:${CONTACT.phone}`}
-            className="btn-press flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-lg"
+            className="btn-press flex items-center justify-center gap-2 rounded-lg bg-secondary px-4 py-3 text-sm font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-lg"
           >
             <FiPhone size={20} aria-hidden="true" />
             <span className="hidden sm:inline">Call</span>

@@ -120,7 +120,7 @@ export function CartPage() {
               <span className="text-primary">৳{total}</span>
             </div>
 
-            <Button as="a" href="/checkout" size="lg" className="mt-6 w-full btn-press">
+            <Button as="a" href="/checkout" size="md" className="mt-6 w-full btn-press">
               <FiShoppingBag size={18} />
               Proceed to Checkout
             </Button>

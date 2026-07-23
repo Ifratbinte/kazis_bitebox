@@ -66,3 +66,14 @@ export interface CustomerInfo {
   address: string
   notes: string
 }
+
+export type OrderStatus = 'pending' | 'confirmed' | 'delivered' | 'cancelled'
+
+export interface Order {
+  id: string
+  items: CartItem[]
+  customer: CustomerInfo
+  total: number
+  status: OrderStatus
+  createdAt: string
+}

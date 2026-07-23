@@ -7,10 +7,10 @@ import { Input } from '@/components/ui/Input'
 import { Textarea } from '@/components/ui/Textarea'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { useCart } from '@/context/CartContext'
+import { useOrders } from '@/context/OrderContext'
 import { getCartOrderLink } from '@/services/orderMessage'
-import type { CartItem, CustomerInfo, OrderChannel } from '@/types'
-import { FiCheck, FiArrowLeft } from 'react-icons/fi'
-import { TbBrandMessenger } from 'react-icons/tb'
+import type { CartItem, CustomerInfo, Order } from '@/types'
+import { FiCheck, FiArrowLeft, FiExternalLink } from 'react-icons/fi'
 import { FaWhatsapp } from 'react-icons/fa'
 
 const INITIAL_CUSTOMER: CustomerInfo = {
@@ -23,14 +23,16 @@ const INITIAL_CUSTOMER: CustomerInfo = {
 
 export function CheckoutPage() {
   const { items, total, clearCart } = useCart()
+  const { placeOrder } = useOrders()
   const [customer, setCustomer] = useState<CustomerInfo>(INITIAL_CUSTOMER)
   const [errors, setErrors] = useState<Partial<Record<keyof CustomerInfo, string>>>({})
-  const [submitted, setSubmitted] = useState(false)
-  const [submitChannel, setSubmitChannel] = useState<OrderChannel | null>(null)
-  const submittedItemsRef = useRef<CartItem[]>([])
-  const submittedTotalRef = useRef(0)
+  const [isPlacing, setIsPlacing] = useState(false)
+  const placedOrderRef = useRef<Order | null>(null)
+  const placedItemsRef = useRef<CartItem[]>([])
+  const placedTotalRef = useRef(0)
+  const whatsappLinkRef = useRef('')
 
-  if (items.length === 0 && !submitted) {
+  if (items.length === 0 && !placedOrderRef.current) {
     return (
       <Container className="py-16">
         <EmptyState
@@ -60,18 +62,27 @@ export function CheckoutPage() {
     return Object.keys(errs).length === 0
   }
 
-  function handleOrder(channel: OrderChannel) {
-    if (!validate()) return
-    submittedItemsRef.current = [...items]
-    submittedTotalRef.current = total
-    setSubmitChannel(channel)
-    setSubmitted(true)
+  function handlePlaceOrder() {
+    if (!validate() || isPlacing) return
+    setIsPlacing(true)
+
+    const savedItems = [...items]
+    const savedTotal = total
+
+    const order = placeOrder(savedItems, customer, savedTotal)
+
+    placedOrderRef.current = order
+    placedItemsRef.current = savedItems
+    placedTotalRef.current = savedTotal
+    whatsappLinkRef.current = getCartOrderLink(savedItems, customer, 'whatsapp', order.id)
+
     clearCart()
+    setIsPlacing(false)
   }
 
-  if (submitted && submitChannel) {
-    const orderLink = getCartOrderLink(submittedItemsRef.current, customer, submitChannel)
-    const savedTotal = submittedTotalRef.current
+  if (placedOrderRef.current) {
+    const order = placedOrderRef.current
+    const waLink = whatsappLinkRef.current
 
     return (
       <Container className="py-16">
@@ -79,27 +90,34 @@ export function CheckoutPage() {
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-success/10">
             <FiCheck size={32} className="text-success" />
           </div>
-          <h1 className="mt-6 font-display text-3xl font-semibold text-secondary">Order Confirmed!</h1>
-          <p className="mt-3 text-text-muted">
-            Click the button below to send your order details to us on{' '}
-            {submitChannel === 'messenger' ? 'Messenger' : 'WhatsApp'}. We'll confirm availability and delivery time.
+          <h1 className="mt-6 font-display text-3xl font-semibold text-secondary">Order Placed!</h1>
+          <p className="mt-1 text-sm text-text-muted">
+            Order ID: <span className="font-mono font-semibold text-secondary">{order.id}</span>
           </p>
+          <p className="mt-3 text-text-muted">
+            Your order has been saved. Now send it to us on WhatsApp so we can confirm availability and delivery time.
+          </p>
+
           <a
-            href={orderLink}
+            href={waLink}
             target="_blank"
             rel="noopener noreferrer"
-            className={`btn-press mt-8 inline-flex items-center gap-2 rounded-full px-8 py-3 text-base font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-lg ${
-              submitChannel === 'messenger' ? 'bg-[#006AFF]' : 'bg-[#25D366]'
-            }`}
+            className="btn-press mt-8 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-3 text-base font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-lg"
           >
-            {submitChannel === 'messenger' ? <TbBrandMessenger size={20} /> : <FaWhatsapp size={20} />}
-            Open {submitChannel === 'messenger' ? 'Messenger' : 'WhatsApp'}
+            <FaWhatsapp size={22} />
+            Send Order via WhatsApp
+            <FiExternalLink size={14} />
           </a>
 
-          <div className="mt-6 rounded-card border border-border bg-surface p-4 text-left">
-            <h3 className="text-sm font-semibold text-secondary">Order Summary</h3>
-            <div className="mt-2 space-y-2">
-              {submittedItemsRef.current.map((item) => (
+          <div className="mt-6 rounded-card border border-border bg-surface p-5 text-left">
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-secondary">Order Summary</h3>
+              <span className="rounded-full bg-primary/10 px-3 py-0.5 text-xs font-semibold text-primary">
+                {order.status.toUpperCase()}
+              </span>
+            </div>
+            <div className="mt-3 space-y-2">
+              {placedItemsRef.current.map((item) => (
                 <div key={`${item.productId}-${item.packLabel}`} className="flex justify-between text-sm">
                   <span className="text-text-muted">
                     {item.productName} ({item.packLabel}) × {item.quantity}
@@ -108,9 +126,19 @@ export function CheckoutPage() {
                 </div>
               ))}
             </div>
-            <div className="mt-2 flex justify-between border-t border-border pt-2 text-sm font-semibold">
+            <div className="mt-3 flex justify-between border-t border-border pt-3 text-sm font-semibold">
               <span>Total</span>
-              <span className="text-primary">৳{savedTotal}</span>
+              <span className="text-primary">৳{placedTotalRef.current}</span>
+            </div>
+
+            <div className="mt-4 rounded-lg bg-accent/10 p-3 text-xs text-text-muted">
+              <p className="font-semibold text-secondary">How it works:</p>
+              <ol className="mt-1 list-decimal space-y-1 pl-4">
+                <li>Click "Send Order via WhatsApp" above</li>
+                <li>The message with your order details will be pre-filled</li>
+                <li>Hit send on WhatsApp</li>
+                <li>We'll confirm availability and delivery time</li>
+              </ol>
             </div>
           </div>
 
@@ -118,8 +146,8 @@ export function CheckoutPage() {
             <Button as="a" href="/shop" variant="outline" size="md">
               Continue Shopping
             </Button>
-            <Button as="a" href="/" variant="ghost" size="md">
-              Back to Home
+            <Button as="a" href="/orders" variant="ghost" size="md">
+              View All Orders
             </Button>
           </div>
         </div>
@@ -218,27 +246,18 @@ export function CheckoutPage() {
               <span className="text-primary">৳{total}</span>
             </div>
 
-            <div className="mt-6 space-y-3">
-              <button
-                type="button"
-                onClick={() => handleOrder('messenger')}
-                className="btn-press flex w-full items-center justify-center gap-2 rounded-lg bg-[#006AFF] px-4 py-3 text-sm font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-lg"
-              >
-                <TbBrandMessenger size={20} />
-                Order via Messenger
-              </button>
-              <button
-                type="button"
-                onClick={() => handleOrder('whatsapp')}
-                className="btn-press flex w-full items-center justify-center gap-2 rounded-lg bg-[#25D366] px-4 py-3 text-sm font-semibold text-white transition-all duration-200 hover:opacity-90 hover:shadow-lg"
-              >
-                <FaWhatsapp size={20} />
-                Order via WhatsApp
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={handlePlaceOrder}
+              disabled={isPlacing}
+              className="btn-press mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-primary-dark hover:shadow-lg hover:shadow-primary/25 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <FaWhatsapp size={18} />
+              {isPlacing ? 'Placing Order...' : 'Place Order & Send via WhatsApp'}
+            </button>
 
             <p className="mt-3 text-center text-xs text-text-muted">
-              We'll confirm availability and delivery time after you send the order.
+              Your order will be saved and you'll be redirected to WhatsApp to confirm.
             </p>
           </div>
         </div>
